@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Autocomplete with jQuery</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- <script>
+    document.getElementById('nativeDate').addEventListener('change', function () {
+      const date = new Date(this.value);
+      const formatted = ('0' + date.getDate()).slice(-2) + '/' +
+                        ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+                        date.getFullYear();
+      document.getElementById('formattedDate').textContent = 'Selected: ' + formatted;
+    });
+  </script> -->
+  <style>
+    body {
+      background: #f7fafc;
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      color: #222;
+    }
+    .form-label {
+      color: #6b7280;
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .form-control, .form-select, textarea {
+      border-radius: 8px;
+      border: 1.5px solid #d1d5db;
+      font-size: 1.08rem;
+      background: #fff;
+      min-height: 44px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      color: #222;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+    }
+    .form-control::placeholder {
+      color: #b0b7c3;
+      opacity: 1;
+      font-size: 1.05rem;
+    }
+    .autocomplete-wrapper input.form-control {
+      border: 1.5px solid #6cbf43;
+      min-height: 44px;
+    }
+    .autocomplete-wrapper input.form-control:focus {
+      border-color: #0077c5;
+      box-shadow: 0 0 0 2px #e3f0fa;
+    }
+    .autocomplete-wrapper {
+      position: relative;
+    }
+    .clear-btn {
+      position: absolute;
+      right: 35px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #b0b7c3;
+      font-size: 1.1rem;
+    }
+    .dropdown-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #666;
+      transition: transform 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .dropdown-btn.rotate {
+      transform: translateY(-50%) rotate(180deg);
+    }
+    .custom-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      z-index: 1050;
+      max-height: 220px;
+      overflow-y: auto;
+      display: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      min-width: 270px;
+    }
+    .custom-dropdown .dropdown-item {
+      padding: 12px 18px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.08rem;
+      color: #222;
+      background: #fff;
+    }
+    .custom-dropdown .dropdown-item.add-new {
+      background: #f6f8f8;
+      color: #0077c5;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+    }
+    .custom-dropdown .dropdown-item:hover {
+      background-color: #eaf6fb;
+    }
+    .invoice-header {
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #222;
+    }
+    .balance-due-label {
+      color: #6b7280;
+      font-size: 1.13rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .balance-due-amount {
+      color: #222;
+      font-size: 2.3rem;
+      font-weight: 700;
+    }
+    .payment-links a {
+      color: #0077c5;
+      text-decoration: underline;
+      font-size: 1.05rem;
+      margin-right: 0.5rem;
+      font-weight: 500;
+    }
+    .payment-links a:hover {
+      color: #005fa3;
+      text-decoration: underline;
+    }
+    .manage-tags-link {
+      color: #0077c5;
+      font-size: 1.01rem;
+      text-decoration: underline;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .table {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1.5px solid #d1d5db;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+      font-size: 1.05rem;
+      color: #222;
+      border-color: #e5e7eb !important;
+    }
+    .table thead {
+      background: #f6f8f8;
+    }
+    .btn-link {
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.08rem;
+      padding-left: 0;
+      padding-right: 1.5rem;
+    }
+    .btn-link:hover {
+      color: #0077c5;
+      text-decoration: underline;
+    }
+    .btn-success, .btn-success:active, .btn-success:focus {
+      background: #2ca01c !important;
+      border-color: #2ca01c !important;
+      color: #fff !important;
+      font-weight: 700;
+      border-radius: 8px;
+      min-width: 130px;
+      font-size: 1.08rem;
+      box-shadow: 0 2px 6px rgba(44,160,28,0.08);
+    }
+    .btn-success:last-child {
+      margin-left: 0.5rem;
+    }
+    .btn-outline-secondary {
+      border-radius: 8px;
+      min-width: 140px;
+      font-size: 1.08rem;
+      color: #6b7280;
+      border: 1.5px solid #d1d5db;
+      background: #f6f8f8;
+      font-weight: 600;
+    }
+    .btn-outline-secondary:hover {
+      background: #eaf6fb;
+      color: #0077c5;
+      border-color: #0077c5;
+    }
+    .row.g-3 > [class^='col-'] {
+      margin-bottom: 1.2rem;
+    }
+    .form-check-label {
+      font-size: 1.01rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    .form-text {
+      margin-top: 0.2rem;
+      color: #6b7280;
+      font-size: 1.01rem;
+    }
+    .invoice-no-box {
+      text-align: right;
+    }
+    @media (min-width: 992px) {
+      .invoice-no-box {
+        padding-left: 2rem;
+      }
+    }
+    /* Table row hover */
+    .table tbody tr:hover {
+      background: #f6f8f8;
+    }
+    /* Remove number input arrows for cleaner look */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    .autocomplete-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.autocomplete-wrapper input.form-control {
+  flex: 1;
+  min-height: 44px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.btn-customer-dropdown {
+  min-height: 44px;
+  border-left: none;
+  border: 1.5px solid #6cbf43;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background: #e3eaea;
+  padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+      .btn-customer-dropdown {
+        border: 1.5px solid #6cbf43;
+        border-left: none;
+        background: #e3eaea;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        color: #222;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        padding: 0;
+        z-index: 2;
+      }
+      .btn-customer-dropdown:hover,
+      .btn-customer-dropdown:focus,
+      .btn-customer-dropdown:active {
+        background: #d8dfdf;
+        border: 1.5px solid #6cbf43;
+        border-left: none;
+        color: #222;
+      }
+      .btn-customer-clear {
+        position: absolute;
+        right: 74px; /* ~24px width of dropdown + 10px spacing */
+        top: 22px;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: #b0b7c3;
+        font-size: 1.1rem;
+        z-index: 1000;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+/* Optional: Add hover effect */
+      .btn-customer-clear:hover {
+          color: #666;
+          background-color: rgba(0,0,0,0.05);
+          border-radius: 50%;
+      }
+
+    .autocomplete-wrapper .form-control:focus + .btn-customer-dropdown {
+      border-color: #0077c5;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+  <div class="container-fluid px-3 py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+      <h2>Invoice no.<span id="headerInvoiceNo">1001</span></h2>
+      <div class="mt-2 mt-md-0">
+        <i class="bi bi-gear mx-2"></i>
+        <i class="bi bi-question-circle mx-2"></i>
+        <i class="bi bi-x-lg mx-2"></i>
+      </div>
+    </div>
+    <!-- <div class="text-end mb-3">
+      <h4 class="text-danger">BALANCE DUE</h4>
+      <h2 class="fw-bold">&pound;<span id="balanceDue">0.00</span></h2>
+    </div> -->
+    <form>
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <label class="form-label">Customer</label>
+          <div class="autocomplete-wrapper input-group">
+            <input id="customerInput" class="form-control pe-5" placeholder="Select a customer" autocomplete="off" />
+            <button id="toggleDropdown" class="btn btn-customer-dropdown" type="button" tabindex="-1"><i class="bi bi-chevron-down"></i></button>
+            <button id="clearInput" class="btn btn-customer-clear" type="button" title="Clear input" style="display: none;"><i class="bi bi-x-lg"></i></button>
+            <div id="dropdownList" class="custom-dropdown"></div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label">Customer email</label>
+          <input type="email" class="form-control" id="customerEmail">
+          <div class="form-check mt-1">
+            <input class="form-check-input" type="checkbox" id="sendLater">
+            <label class="form-check-label" for="sendLater">Send later</label>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="text-end mb-3">
+            <h4 class="text-danger">BALANCE DUE</h4>
+            <h2 class="fw-bold">&pound;<span id="balanceDue">0.00</span></h2>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label">Billing address</label>
+          <textarea class="form-control" rows="4" id="billingAddress"></textarea>
+        </div>
+        <div class="col-12 col-md-2">
+          <label class="form-label">Terms</label>
+          <select class="form-select" id="terms">
+            <option selected>Net 30</option>
+            <option>Net 15</option>
+            <option>Due on receipt</option>
+          </select>
+          <p class="ps-1 pt-5">Reminders <a href="#">Edits</a></p>
+        </div>
+        
+        <div class="col-6 col-md-2">
+          <label class="form-label">Invoice date</label>
+          <input type="date" id="nativeDate" class="form-control" id="invoiceDate">
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label">Due date</label>
+          <input type="date" id="nativeDate" class="form-control" id="dueDate">
+        </div>
+        <div class="col-12 col-md-1"></div>
+        <div class="col-12 col-md-2">
+          <label class="form-label">Invoice no.</label>
+          <input type="text" class="form-control" id="invoiceNo" value="1001">
+        </div>
+      </div>
+      <div class="my-3 col-12 col-md-7">
+        <label class="form-label">Tags</label>
+        <input type="text" class="form-control" id="tags" placeholder="Start typing to add a tag">
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>SERVICE DATE</th>
+              <th>PRODUCT/SERVICE</th>
+              <th>DESCRIPTION</th>
+              <th>QTY</th>
+              <th>RATE</th>
+              <th>AMOUNT</th>
+              <th>VAT</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><input type="date" id="nativeDate" class="form-control"></td>
+              <td><input type="text" class="form-control"></td>
+              <td><input type="text" class="form-control"></td>
+              <td><input type="number" class="form-control"></td>
+              <td><input type="number" class="form-control"></td>
+              <td><input type="number" class="form-control"></td>
+              <td><input type="text" class="form-control"></td>
+              <td><i class="bi bi-trash"></i></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><input type="date" id="nativeDate" class="form-control"></td>
+              <td><input type="text" class="form-control"></td>
+              <td><input type="text" class="form-control"></td>
+              <td><input type="number" class="form-control"></td>
+              <td><input type="number" class="form-control"></td>
+              <td><input type="number" class="form-control"></td>
+              <td><input type="text" class="form-control"></td>
+              <td><i class="bi bi-trash"></i></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mb-3 d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-outline-primary btn-sm">Add lines</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm">Clear all lines</button>
+          <button type="button" class="btn btn-outline-success btn-sm">Add subtotal</button>
+        </div>
+      </div>
+      <div class="row justify-content-end">
+        <div class="col-12 col-md-4">
+          <div class="d-flex justify-content-between">
+            <span>Subtotal</span>
+            <strong>&pound;0.00</strong>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>VAT @ 20% on 0.00</span>
+            <strong>0.00</strong>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <span>Total</span>
+            <strong>&pound;0.00</strong>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>Balance due</span>
+            <strong>&pound;0.00</strong>
+          </div>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label">Message on invoice</label>
+          <textarea class="form-control" rows="3"></textarea>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label">Message on statement</label>
+          <textarea class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Attachments <small>(Maximum size: 20MB)</small></label>
+        <div class="border p-3 bg-white text-center" style="cursor: pointer;">
+          <i class="bi bi-paperclip"></i> Drag/Drop files here or click the icon
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12 d-flex flex-wrap gap-2 justify-content-between align-items-center">
+          <div>
+            <button type="button" class="btn btn-link">Cancel</button>
+            <button type="button" class="btn btn-link">Clear</button>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary">Print or Preview</button>
+            <button type="button" class="btn btn-outline-secondary">Make recurring</button>
+            <button type="button" class="btn btn-outline-secondary">Customise</button>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success">Save and send</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+   // Replace the existing jQuery script with this enhanced version
+    $(function () {
+      const customers = [
+        { name: "Hadi Abid", type: "Customer" },
+        { name: "Ibrahim", type: "Customer" },
+        { name: "Mr. Haider Ali", type: "Customer" },
+        { name: "Ms. Sara Khan", type: "Customer" },
+        { name: "John Doe", type: "Customer" },
+        { name: "Emily Smith", type: "Customer" },
+        { name: "Ali Raza", type: "Customer" },
+        { name: "Zainab Malik", type: "Customer" }
+      ];
+
+      const $input = $('#customerInput');
+      const $clearBtn = $('#clearInput');
+      const $dropdownIcon = $('#toggleDropdown');
+      const $dropdown = $('#dropdownList');
+      
+      // Keep track of currently selected item in dropdown
+      let selectedIndex = -1;
+      let visibleItems = [];
+
+      function showDropdown(filtered) {
+        $dropdown.empty();
+        $dropdown.append(`<div class="dropdown-item add-new" style="font-weight: 500; color: #0077cc; border-bottom: 1px solid #eee;">+ Add new</div>`);
+        
+        // Reset selected index when showing dropdown
+        selectedIndex = -1;
+        
+        // Store filtered customers plus the "Add new" option
+        visibleItems = ["add-new", ...filtered];
+        
+        if (filtered.length === 0) {
+          $dropdown.show();
+          $dropdownIcon.addClass('rotate');
+          return;
+        }
+        
+        filtered.forEach(cust => {
+          $dropdown.append(`<div class="dropdown-item d-flex justify-content-between align-items-center"><span>${cust.name}</span><span class="text-muted small">${cust.type}</span></div>`);
+        });
+        
+        $dropdown.show();
+        $dropdownIcon.addClass('rotate');
+      }
+
+      function filterAndShow() {
+        const val = $input.val().toLowerCase();
+        const filtered = customers.filter(cust => cust.name.toLowerCase().includes(val));
+        showDropdown(filtered);
+      }
+
+      // Function to highlight selected item and ensure it's visible
+      function updateSelectedItem() {
+        // Remove highlight from all items
+        $dropdown.find('.dropdown-item').removeClass('bg-light');
+        
+        // Add highlight to selected item if valid
+        if (selectedIndex >= 0 && selectedIndex < visibleItems.length) {
+          const $selectedItem = $dropdown.find('.dropdown-item').eq(selectedIndex);
+          $selectedItem.addClass('bg-light');
+          
+          // Ensure the selected item is visible in the dropdown
+          const itemPosition = $selectedItem.position().top;
+          const itemHeight = $selectedItem.outerHeight();
+          const dropdownHeight = $dropdown.height();
+          const scrollTop = $dropdown.scrollTop();
+          
+          // If item is below the visible area
+          if (itemPosition + itemHeight > dropdownHeight) {
+            $dropdown.scrollTop(scrollTop + (itemPosition + itemHeight - dropdownHeight));
+          }
+          // If item is above the visible area
+          else if (itemPosition < 0) {
+            $dropdown.scrollTop(scrollTop + itemPosition);
+          }
+        }
+      }
+
+      // Function to select an item from dropdown
+      function selectItem() {
+        if (selectedIndex >= 0 && selectedIndex < visibleItems.length) {
+          if (selectedIndex === 0) {
+            // "Add new" option
+            $input.val('');
+            $dropdown.hide();
+            $clearBtn.show();
+            $dropdownIcon.removeClass('rotate');
+          } else {
+            // Select customer
+            const selectedCustomer = visibleItems[selectedIndex];
+            $input.val(selectedCustomer.name);
+            $dropdown.hide();
+            $clearBtn.show();
+            $dropdownIcon.removeClass('rotate');
+          }
+        }
+      }
+
+      $input.on('input', function () {
+        $clearBtn.toggle(!!this.value);
+        filterAndShow();
+      });
+
+      // Add keydown event handler for arrow navigation
+      $input.on('keydown', function(e) {
+        // If dropdown is not visible, don't do anything
+        if (!$dropdown.is(':visible')) {
+          if (e.key === 'ArrowDown') {
+            filterAndShow();
+            return;
+          }
+          return;
+        }
+        
+        switch (e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, visibleItems.length - 1);
+            updateSelectedItem();
+            break;
+            
+          case 'ArrowUp':
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, 0);
+            updateSelectedItem();
+            break;
+            
+          case 'Enter':
+            e.preventDefault();
+            selectItem();
+            break;
+            
+          case 'Escape':
+            e.preventDefault();
+            $dropdown.hide();
+            $dropdownIcon.removeClass('rotate');
+            break;
+        }
+      });
+
+      $clearBtn.on('click', function () {
+        console.log('Clear button clicked'); // Debug log
+        $input.val('').focus();
+        $clearBtn.hide();
+        $dropdown.hide();
+        $dropdownIcon.removeClass('rotate');
+      });
+
+      $dropdown.on('click', '.dropdown-item', function () {
+        if ($(this).hasClass('add-new')) {
+          $input.val('');
+          $dropdown.hide();
+          $clearBtn.show();
+          $dropdownIcon.removeClass('rotate');
+        } else {
+          $input.val($(this).find('span').first().text());
+          $dropdown.hide();
+          $clearBtn.show();
+          $dropdownIcon.removeClass('rotate');
+        }
+      });
+
+      // Add mouseover event to highlight items when hovering
+      $dropdown.on('mouseover', '.dropdown-item', function() {
+        selectedIndex = $(this).index();
+        updateSelectedItem();
+      });
+
+      $dropdownIcon.on('click', function () {
+        if ($dropdown.is(':visible')) {
+          $dropdown.hide();
+          $dropdownIcon.removeClass('rotate');
+        } else {
+          filterAndShow();
+        }
+      });
+
+      $(document).on('click', function (e) {
+        if (!$(e.target).closest('.autocomplete-wrapper').length) {
+          $dropdown.hide();
+          $dropdownIcon.removeClass('rotate');
+        }
+      });
+    }); 
+    
+  </script>
+</body>
+
+</html>
