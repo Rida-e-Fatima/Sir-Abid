@@ -35,7 +35,7 @@
       font-weight: 500;
       margin-bottom: 0.25rem;
     }
-    .form-control, .form-select, textarea {
+    .form-control, .form-select, textarea{
       /* border-radius: 8px; */
       border-radius: 0 !important;
       border: 1.5px solid #d1d5db;
@@ -334,7 +334,7 @@
       color: #6c757d;
     }
     input.form-control {
-      border: none;
+      /* border: none; */
       box-shadow: none;
       font-size: 1rem;
     }
@@ -348,6 +348,7 @@
       padding-top: 1rem;
     }
 table input:focus {
+  border: none;
   outline: none !important;
   box-shadow: none !important;
   border-color: inherit !important;
@@ -359,6 +360,34 @@ textarea:focus {
   box-shadow: none !important;
   border-color: inherit !important; /* Optional: keeps border from changing color */
 }
+#invoiceTable input.form-control {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: transparent !important;
+}
+
+
+.footer-dark {
+  background-color: #232323;
+  border-top: 1px solid #444;
+  z-index: 1050; /* make sure it stays above other elements */
+}
+
+.footer-dark .btn {
+  font-weight: 600;
+}
+
+.footer-dark .btn-outline-light {
+  color: #fff;
+  border-color: #aaa;
+}
+
+.footer-dark .btn-outline-light:hover {
+  background-color: #333;
+  color: #fff;
+}
+
   </style>
   </head>
 
@@ -378,7 +407,7 @@ textarea:focus {
       <form>
         <div class="row g-4">
           <div class="col-12 col-md-3">
-            <label class="form-label fw-bold text-black fs-6">Customer <i
+            <label class="form-label fw-bold text-black" style="font-size:12px;">Customer <i
                 class="bi bi-question-circle mx-2"></i></label>
             <div class="autocomplete-wrapper input-group">
               <input id="customerInput" class="form-control pe-5"
@@ -393,7 +422,7 @@ textarea:focus {
             </div>
           </div>
           <div class="col-12 col-md-3">
-            <label class="form-label fw-bold text-black fs-6">Customer email <i
+            <label class="form-label fw-bold text-black" style="font-size:12px;">Customer email <i
                 class="bi bi-question-circle mx-2"></i></label>
             <input type="email" class="form-control" id="customerEmail">
             <div class="form-check mt-1">
@@ -410,14 +439,14 @@ textarea:focus {
               <h2 class="fw-bold">&pound;<span id="balanceDue">0.00</span></h2>
             </div>
           </div>
-          <div class="col-12 col-md-3">
-            <label class="form-label fw-bold text-black fs-6">Billing
+          <div class="col" style="flex: 0 0 20.8333%; max-width: 20.8333%;">
+            <label class="form-label fw-bold text-black" style="font-size:12px;">Billing
               address</label>
             <textarea class="form-control" rows="4"
               id="billingAddress"></textarea>
           </div>
-          <div class="col-12 col-md-2">
-            <label class="form-label fw-bold text-black fs-6">Terms <i
+          <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
+            <label class="form-label fw-bold text-black" style="font-size:12px;">Terms <i
                 class="bi bi-question-circle mx-2"></i></label>
             <select class="form-select" id="terms">
               <option selected>Net 30</option>
@@ -427,26 +456,26 @@ textarea:focus {
             <p class="ps-1 pt-5">Reminders <a href="#">Edits</a></p>
           </div>
 
-          <div class="col-6 col-md-2">
-            <label class="form-label fw-bold text-black fs-6">Invoice
+          <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
+            <label class="form-label fw-bold text-black" style="font-size:12px;">Invoice
               date</label>
             <input type="date" id="nativeDate" class="form-control"
               id="invoiceDate">
           </div>
-          <div class="col-6 col-md-2">
-            <label class="form-label fw-bold text-black fs-6">Due date</label>
+          <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
+            <label class="form-label fw-bold text-black" style="font-size:12px;">Due date</label>
             <input type="date" id="nativeDate" class="form-control"
               id="dueDate">
           </div>
-          <div class="col-12 col-md-1"></div>
+          <div class="col-12 col-md-3"></div>
           <div class="col-12 col-md-2">
-            <label class="form-label fw-bold text-black fs-6">Invoice
+            <label class="form-label fw-bold text-black" style="font-size:12px;">Invoice
               no.</label>
             <input type="text" class="form-control" id="invoiceNo" value="1001">
           </div>
         </div>
         <div class="my-3 col-12 col-md-7">
-          <label class="form-label fw-bold text-black fs-6">Tags <i
+          <label class="form-label fw-bold text-black" style="font-size:12px;">Tags <i
               class="bi bi-question-circle mx-2"></i></label>
           <input type="text" class="form-control" id="tags"
             placeholder="Start typing to add a tag">
@@ -480,8 +509,8 @@ textarea:focus {
                   <td class="drag-handle"><i
                       class="bi bi-grip-vertical"></i></td>
                   <td>1</td>
-                  <td><input type="date" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
+                  <td><input type="date" class="form-control " /></td>
+                  <td><input type="text" class="form-control " /></td>
                   <td><input type="text" class="form-control" /></td>
                   <td><input type="number" class="form-control qty"
                       value="1" /></td>
@@ -493,17 +522,19 @@ textarea:focus {
                 </tr>
               </tbody>
             </table>
-            <div class="d-flex gap-2 mb-3">
+            <div class="d-flex justify-content-between align-items-start">
+            <div class="d-flex gap-2">
               <button type="button" class="btn btn-outline btn-sm"
                 onclick="addRow()" style="border: 1px solid gray;">Add lines</button>
               <button type="button" class="btn btn-outline btn-sm"
                 onclick="clearAll()" style="border: 1px solid gray;">Clear all lines</button>
                  <button type="button" class="btn btn-outline btn-sm" onclick="addSubtotal()" style="border: 1px solid gray;">Add subtotal</button>
             </div>
-            <div class="total-summary">
+            <div class="total-summary p-0" style="font-size:19px">
               Total: &pound;<span id="totalAmount">0.00</span><br>
               Balance due: &pound;<span id="balanceDue">0.00</span>
             </div>
+</div>
           </div>
         </div>
 
@@ -518,27 +549,10 @@ textarea:focus {
               <textarea class="form-control" rows="3"></textarea>
             </div>
           </div>
-          <!-- <div class="col-12 col-md-4">
-          <div class="d-flex justify-content-between">
-            <span>Subtotal</span>
-            <strong>&pound;0.00</strong>
-          </div>
-          <div class="d-flex justify-content-between">
-            <span>VAT @ 20% on 0.00</span>
-            <input value="0.00" class="me-0 w-25 text-end">
-          </div>
-          <div class="d-flex justify-content-between">
-            <span>Total</span>
-            <strong>&pound;0.00</strong>
-          </div>
-          <div class="d-flex justify-content-between">
-            <span >Balance due</span>
-            <strong>&pound;0.00</strong>
-          </div>
-        </div> -->
+          
         </div>
 
-        <div class="mb-4">
+        <div class="my-5" >
           <label class="form-label">Attachments <small>(Maximum size:
               20MB)</small></label>
           <div class="border p-3 bg-white text-center" style="cursor: pointer;">
@@ -546,7 +560,29 @@ textarea:focus {
             icon
           </div>
         </div>
-        <div class="row mt-4">
+
+
+    <footer class="footer-dark fixed-bottom py-3">
+  <div class="container-fluid d-flex justify-content-between align-items-center w-100">
+    
+    <div class="d-flex">
+      <button class="btn btn-outline-light btn-sm me-2 rounded-pill">Cancel</button>
+    </div>
+    
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-light btn-sm rounded-pill">Print or Preview</button>
+      <button class="btn btn-outline-light btn-sm rounded-pill">Make recurring</button>
+      <button class="btn btn-outline-light btn-sm rounded-pill">Customise</button>
+    </div>
+    
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-success btn-sm rounded-pill">Save</button>
+      <button class="btn btn-success btn-sm rounded-pill">Save and send</button>
+    </div>
+    
+  </div>
+</footer>
+        <!-- <div class="row mt-4">
           <div
             class="col-12 d-flex flex-wrap gap-2 justify-content-between align-items-center">
             <div>
@@ -565,7 +601,7 @@ textarea:focus {
                 send</button>
             </div>
           </div>
-        </div>
+        </div> -->
       </form>
     </div>
 
