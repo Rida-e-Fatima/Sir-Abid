@@ -391,6 +391,33 @@ input.form-control,
 select.form-select {
   line-height: 1.2;
 }
+select.form-select {
+  width: 100%;
+}
+
+select.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 16px;
+
+  padding-right: 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* Ensures options don't overflow */
+select.form-select option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
   </style>
   </head>
 
@@ -448,26 +475,25 @@ select.form-select {
             <textarea class="form-control" rows="4"
               id="billingAddress"></textarea>
           </div>
-          <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
-            <label class="form-label fw-bold text-black" style="font-size:12px;">Terms <i
-                class="bi bi-question-circle mx-2"></i></label>
-            <select class="form-select" id="terms">
-              <option selected>Net 30</option>
-              <option>Net 15</option>
-              <option>Due on receipt</option>
-            </select>
-            <p class="ps-1 pt-5">Reminders <a href="#">Edits</a></p>
-          </div>
-
+       <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
+  <label class="form-label fw-bold text-black" style="font-size:12px;">
+    Terms <i class="bi bi-question-circle mx-2"></i>
+  </label>
+  <select class="form-select" id="terms">
+    <option selected>Net 30</option>
+    <option>Net 15</option>
+    <option>Due on receipt</option>
+  </select>
+</div>
           <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
             <label class="form-label fw-bold text-black" style="font-size:12px;">Invoice
               date</label>
-            <input type="date" id="nativeDate" class="form-control"
+            <input  type="text" class="form-control" placeholder="mm/dd/yyyy"  id="nativeDate" class="form-control"
               id="invoiceDate">
           </div>
           <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
             <label class="form-label fw-bold text-black" style="font-size:12px;">Due date</label>
-            <input type="date" id="nativeDate" class="form-control"
+            <input type="text" class="form-control" placeholder="mm/dd/yyyy"  id="nativeDate" class="form-control"
               id="dueDate">
           </div>
           <div class="col-12 col-md-3"></div>
@@ -512,7 +538,7 @@ select.form-select {
                   <td class="drag-handle"><i
                       class="bi bi-grip-vertical"></i></td>
                   <td>1</td>
-                  <td><input type="date" class="form-control " /></td>
+                  <td><input type="text" class="form-control" placeholder="mm/dd/yyyy"  class="form-control " /></td>
                   <td><input type="text" class="form-control " /></td>
                   <td><input type="text" class="form-control" /></td>
                   <td><input type="number" class="form-control qty"
