@@ -38,7 +38,7 @@
     .form-control, .form-select, textarea{
       /* border-radius: 8px; */
       border-radius: 0 !important;
-      border: 1.5px solid #d1d5db;
+      /* border: 1.5px solid #d1d5db; */
       font-size: 1.08rem;
       background: #fff;
       /* min-height: 44px; */
@@ -53,12 +53,12 @@
       font-size: 1.05rem;
     }
     .autocomplete-wrapper input.form-control {
-      border: 1.5px solid #00000033;
+      /* border: 1.5px solid #00000033; */
       /* min-height: 44px; */
         border-radius: 0 !important;
     }
     .autocomplete-wrapper input.form-control:focus {
-     border-color: #00000033 ;   /* Bootstrap blue or set your default */
+     /* border-color: #00000033 ;   Bootstrap blue or set your default */
   box-shadow: none !important;
     }
     .autocomplete-wrapper {
@@ -320,7 +320,7 @@
       }
 
     .autocomplete-wrapper .form-control:focus + .btn-customer-dropdown {
-      /* border-color: #0077c5; */
+      border-color: #0077c5;
     }
 
 
@@ -417,6 +417,32 @@ select.form-select option {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* Unified border style around input + button */
+.border-container {
+  border: 1.5px solid #d1d5db;
+  /* border-radius: 6px; */
+  display: flex;
+  align-items: center;
+  transition: border-color 0.2s ease;
+}
+
+/* Green border on focus */
+.border-container.focused {
+  border-color: #00aa55 !important;
+}
+
+/* Prevent separate button border */
+.btn-customer-dropdown {
+  border: none !important;
+  border-left: 1.5px solid #d1d5db !important;
+  /* border-radius: 0 6px 6px 0 !important; */
+}
+
+/* Remove default input border when inside grouped container */
+.border-container .form-control {
+  border: none !important;
+  box-shadow: none !important;
+}
 
   </style>
   </head>
@@ -435,77 +461,134 @@ select.form-select option {
         </div>
       </div>
       <form>
-        <div class="row g-4">
-          <div class="col-12 col-md-3">
-            <label class="form-label fw-bold text-black" style="font-size:12px;">Customer <i
-                class="bi bi-question-circle mx-2"></i></label>
-            <div class="autocomplete-wrapper input-group">
-              <input id="customerInput" class="form-control pe-5"
+        <div class="row g-4 align-items-center">
+          <div class="col-12 col-md-3 ">
+            <label class="form-label fw-bold text-black"
+              style="font-size:12px;">
+              Customer <i class="bi bi-question-circle mx-2"
+                data-bs-toggle="tooltip"
+                title="Select a customer to make sure the right person pays you on time."></i>
+
+            </label>
+            <div class="autocomplete-wrapper input-group border-container">
+              <input id="customerInput" class="form-control border-0 pe-5"
                 placeholder="Select a customer" autocomplete="off" />
               <button id="toggleDropdown" class="btn btn-customer-dropdown"
-                type="button" tabindex="-1"><i
-                  class="bi bi-chevron-down"></i></button>
+                type="button" tabindex="-1">
+                <i class="bi bi-chevron-down"></i>
+              </button>
               <button id="clearInput" class="btn btn-customer-clear"
-                type="button" title="Clear input" style="display: none;"><i
-                  class="bi bi-x-lg"></i></button>
+                type="button" title="Clear input" style="display: none;">
+                <i class="bi bi-x-lg"></i>
+              </button>
               <div id="dropdownList" class="custom-dropdown"></div>
             </div>
           </div>
-          <div class="col-12 col-md-3">
-            <label class="form-label fw-bold text-black" style="font-size:12px;">Customer email <i
-                class="bi bi-question-circle mx-2"></i></label>
+          <div class="col-12 col-md-3 ">
+            <label
+              class="form-label fw-bold text-black d-flex justify-content-between align-items-center"
+              style="font-size:12px;">
+              <span>Customer email <i class="bi bi-question-circle mx-2"
+                  data-bs-toggle="tooltip"
+                  title="Add an email to send invoice."></i></span>
+              <a href="#" class="text-primary fw-semibold text-decoration-none"
+                style="font-size: 12px;">Cc/Bcc</a>
+            </label>
             <input type="email" class="form-control" id="customerEmail">
-            <div class="form-check mt-1">
+            <!-- <div class="form-check ">
               <input class="form-check-input" type="checkbox" id="sendLater">
               <label class="form-check-label" for="sendLater">Send later</label>
-            </div>
+            </div> -->
           </div>
           <div class="col-4">
-
+            <label class="form-label fw-bold text-black"
+              style="font-size:12px;">Payment options</label>
+            <div class="d-flex flex-column gap-1">
+              <div>
+                <a href="#"
+                  class="text-primary fw-semibold text-decoration-underline"
+                  style="font-size: 11px;">Accept Card Payments</a>
+                <span class="text-muted small" style="font-size: 11px;">with
+                  PayPal</span>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/40px-Visa.svg.png"
+                  style="height: 18px; margin-left: 5px;" />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Mastercard-logo.png/40px-Mastercard-logo.png"
+                  style="height: 18px;" />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/PayPal_logo.svg/40px-PayPal_logo.svg.png"
+                  style="height: 18px;" />
+              </div>
+              <div>
+                <a href="#"
+                  class="text-primary fw-semibold text-decoration-underline"
+                  style="font-size: 11px;">Set up Direct Debit</a>
+                <span class="text-muted small">with GoCardless</span>
+                <span
+                  class="badge rounded-circle bg-light border text-primary fw-bold"
+                  style="padding: 6px 5px; font-size: 10px;">GC</span>
+              </div>
+            </div>
           </div>
           <div class="col-12 col-md-2">
             <div class="text-end mb-3">
               <h4 class="text-black" style="font-size: 12px;">BALANCE DUE</h4>
-              <h2 class="fw-bold fs-1">&pound;<span id="balanceDue">0.00</span></h2>
+              <h2 class="fw-bold fs-1">&pound;<span
+                  id="balanceDue">0.00</span></h2>
             </div>
           </div>
           <div class="col" style="flex: 0 0 20.8333%; max-width: 20.8333%;">
-            <label class="form-label fw-bold text-black" style="font-size:12px;">Billing
+            <label class="form-label fw-bold text-black"
+              style="font-size:12px;">Billing
               address</label>
             <textarea class="form-control" rows="4"
               id="billingAddress"></textarea>
           </div>
-       <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
-  <label class="form-label fw-bold text-black" style="font-size:12px;">
-    Terms <i class="bi bi-question-circle mx-2"></i>
-  </label>
-  <select class="form-select" id="terms">
-    <option selected>Net 30</option>
-    <option>Net 15</option>
-    <option>Due on receipt</option>
-  </select>
-</div>
           <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
-            <label class="form-label fw-bold text-black" style="font-size:12px;">Invoice
+            <label class="form-label fw-bold text-black"
+              style="font-size:12px;">
+              Terms <i class="bi bi-question-circle mx-2"></i>
+            </label>
+            <select class="form-select" id="terms">
+              <option selected>Net 30</option>
+              <option>Net 15</option>
+              <option>Due on receipt</option>
+            </select>
+          </div>
+          <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
+            <label class="form-label fw-bold text-black"
+              style="font-size:12px;">Invoice
               date</label>
-            <input  type="text" class="form-control" placeholder="mm/dd/yyyy"  id="nativeDate" class="form-control"
+            <input type="text" class="form-control" placeholder="mm/dd/yyyy"
+              id="nativeDate" class="form-control"
               id="invoiceDate">
           </div>
           <div class="col" style="flex: 0 0 12.5%; max-width: 12.5%;">
-            <label class="form-label fw-bold text-black" style="font-size:12px;">Due date</label>
-            <input type="text" class="form-control" placeholder="mm/dd/yyyy"  id="nativeDate" class="form-control"
+            <label class="form-label fw-bold text-black"
+              style="font-size:12px;">Due date</label>
+            <input type="text" class="form-control" placeholder="mm/dd/yyyy"
+              id="nativeDate" class="form-control"
               id="dueDate">
           </div>
           <div class="col-12 col-md-3"></div>
           <div class="col-12 col-md-2">
-            <label class="form-label fw-bold text-black" style="font-size:12px;">Invoice
+            <label class="form-label fw-bold text-black"
+              style="font-size:12px;">Invoice
               no.</label>
             <input type="text" class="form-control" id="invoiceNo" value="1001">
           </div>
         </div>
         <div class="my-3 col-12 col-md-7">
-          <label class="form-label fw-bold text-black" style="font-size:12px;">Tags <i
-              class="bi bi-question-circle mx-2"></i></label>
+          <label
+            class="form-label fw-bold text-black d-flex justify-content-between align-items-center"
+            style="font-size:12px;">
+            <span>Tags <i class="bi bi-question-circle mx-2"
+                data-bs-toggle="tooltip"
+                title="Add an email to send invoice."></i></span>
+            <a href="#" class="text-primary fw-semibold text-decoration-none"
+              style="font-size: 12px;">Manage Tags</a>
+          </label>
           <input type="text" class="form-control" id="tags"
             placeholder="Start typing to add a tag">
         </div>
@@ -538,7 +621,8 @@ select.form-select option {
                   <td class="drag-handle"><i
                       class="bi bi-grip-vertical"></i></td>
                   <td>1</td>
-                  <td><input type="text" class="form-control" placeholder="mm/dd/yyyy"  class="form-control " /></td>
+                  <td><input type="text" class="form-control"
+                      placeholder="mm/dd/yyyy" class="form-control " /></td>
                   <td><input type="text" class="form-control " /></td>
                   <td><input type="text" class="form-control" /></td>
                   <td><input type="number" class="form-control qty"
@@ -552,18 +636,22 @@ select.form-select option {
               </tbody>
             </table>
             <div class="d-flex justify-content-between align-items-start">
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-outline btn-sm"
-                onclick="addRow()" style="border: 1px solid gray;">Add lines</button>
-              <button type="button" class="btn btn-outline btn-sm"
-                onclick="clearAll()" style="border: 1px solid gray;">Clear all lines</button>
-                 <button type="button" class="btn btn-outline btn-sm" onclick="addSubtotal()" style="border: 1px solid gray;">Add subtotal</button>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline btn-sm"
+                  onclick="addRow()" style="border: 1px solid gray;">Add
+                  lines</button>
+                <button type="button" class="btn btn-outline btn-sm"
+                  onclick="clearAll()" style="border: 1px solid gray;">Clear all
+                  lines</button>
+                <button type="button" class="btn btn-outline btn-sm"
+                  onclick="addSubtotal()" style="border: 1px solid gray;">Add
+                  subtotal</button>
+              </div>
+              <div class="total-summary p-0 " style="font-size:19px">
+                Total: &pound;<span id="totalAmount">£0.00</span><br>
+                Balance due: &pound;<span id="balanceDue">0.00</span>
+              </div>
             </div>
-            <div class="total-summary p-0 " style="font-size:19px">
-              Total: &pound;<span  id="totalAmount" >£0.00</span><br>
-              Balance due: &pound;<span id="balanceDue">0.00</span>
-            </div>
-</div>
           </div>
         </div>
 
@@ -578,10 +666,10 @@ select.form-select option {
               <textarea class="form-control" rows="3"></textarea>
             </div>
           </div>
-          
+
         </div>
 
-        <div class="my-5" >
+        <div class="my-5">
           <label class="form-label">Attachments <small>(Maximum size:
               20MB)</small></label>
           <div class="border p-3 bg-white text-center" style="cursor: pointer;">
@@ -590,27 +678,35 @@ select.form-select option {
           </div>
         </div>
 
+        <footer class="footer-dark fixed-bottom py-3">
+          <div
+            class="container-fluid d-flex justify-content-between align-items-center w-100">
 
-    <footer class="footer-dark fixed-bottom py-3">
-  <div class="container-fluid d-flex justify-content-between align-items-center w-100">
-    
-    <div class="d-flex">
-      <button class="btn btn-outline-light btn-sm me-2 rounded-pill">Cancel</button>
-    </div>
-    
-    <div class="d-flex gap-2">
-      <button class="btn btn-outline-light btn-sm" style="border: none; border-right: 1px solid #aaa; border-radius: 0; background: transparent; padding: 0.5rem 1rem;">Print or Preview</button>
-      <button class="btn btn-outline-light btn-sm" style="border: none; border-right: 1px solid #aaa; border-radius: 0; background: transparent; padding: 0.5rem 1rem;">Make recurring</button>
-      <button class="btn btn-outline-light btn-sm" style="border: none;  border-radius: 0; background: transparent; padding: 0.5rem 1rem;">Customise</button>
-    </div>
-    
-    <div class="d-flex gap-2">
-      <button class="btn btn-outline-success btn-sm rounded-pill">Save</button>
-      <button class="btn btn-success btn-sm rounded-pill">Save and send</button>
-    </div>
-    
-  </div>
-</footer>
+            <div class="d-flex">
+              <button
+                class="btn btn-outline-light btn-sm me-2 rounded-pill">Cancel</button>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-light btn-sm"
+                style="border: none; border-right: 1px solid #aaa; border-radius: 0; background: transparent; padding: 0.5rem 1rem;">Print
+                or Preview</button>
+              <button class="btn btn-outline-light btn-sm"
+                style="border: none; border-right: 1px solid #aaa; border-radius: 0; background: transparent; padding: 0.5rem 1rem;">Make
+                recurring</button>
+              <button class="btn btn-outline-light btn-sm"
+                style="border: none;  border-radius: 0; background: transparent; padding: 0.5rem 1rem;">Customise</button>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-outline-success btn-sm rounded-pill">Save</button>
+              <button class="btn btn-success btn-sm rounded-pill">Save and
+                send</button>
+            </div>
+
+          </div>
+        </footer>
         <!-- <div class="row mt-4">
           <div
             class="col-12 d-flex flex-wrap gap-2 justify-content-between align-items-center">
@@ -650,11 +746,24 @@ select.form-select option {
         { name: "Ali Raza", type: "Customer" },
         { name: "Zainab Malik", type: "Customer" }
       ];
-
+    
       const $input = $('#customerInput');
       const $clearBtn = $('#clearInput');
       const $dropdownIcon = $('#toggleDropdown');
       const $dropdown = $('#dropdownList');
+
+      const $borderWrapper = $('.autocomplete-wrapper');
+$input.on('focus', function () {
+  $borderWrapper.css('border', '1.5px solid #00aa55');
+  filterAndShow(); // Now shows the dropdown when input is focused
+});
+$input.on('blur', function () {
+  setTimeout(() => {
+    if (!$dropdown.is(':visible')) {
+      $borderWrapper.removeClass('focused');
+    }
+  }, 150);
+});
       
       // Keep track of currently selected item in dropdown
       let selectedIndex = -1;
@@ -894,6 +1003,7 @@ select.form-select option {
 
     updateTotals();
   </script>
+
   </body>
 
 </html>
