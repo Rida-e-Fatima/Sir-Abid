@@ -30,7 +30,7 @@
       color: #222;
     }
     .form-label {
-      color: #6b7280;
+      color: black;
       font-size: 1.05rem;
       font-weight: 500;
       margin-bottom: 0.25rem;
@@ -480,10 +480,13 @@ select.form-select option {
 }
 
   </style>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </head>
 
   <body class="bg-light">
-    <div class="container-fluid px-3 py-4">
+    <div class="container-fluid px-3 py-2">
       <div
         class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
         <h2 class="fw-bold fs-5"><i
@@ -496,13 +499,14 @@ select.form-select option {
         </div>
       </div>
       <form>
-        <div class="row g-4 justify-content-center my-4">
-          <div class="col" style="flex: 0 0 25%; max-width: 25%;">
+        <div class="row g-4 justify-content-center ">
+          <div class="col flex align-items-start" style="flex: 0 0 25%; max-width: 25%;">
             <label class="form-label fw-semi-bold text-black"
               style="font-size:12px;">
               Customer<i class="bi bi-question-circle mx-2 "
                 data-bs-toggle="tooltip"
-                title="Select a customer to make sure the right person pays you on time."></i>
+                title="Select a customer to make sure the right person pays you on time.">
+              </i>
 
             </label>
             <div class="autocomplete-wrapper input-group border-container">
@@ -579,7 +583,7 @@ select.form-select option {
           </div>
         </div>
         <div class="row g-4 ">
-          <div class="col" style="flex: 0 0 20.8333%; max-width: 20.8333%;">
+          <div class="col" style="flex: 0 0 25%; max-width: 25%;">
             <label class="form-label fw-semi-bold text-black"
               style="font-size:12px;">Billing
               address</label>
@@ -587,7 +591,7 @@ select.form-select option {
               style="  height: 90px;  resize: none;"
               id="billingAddress"></textarea>
           </div>
-          <div class="col" style="flex: 0 0 13.5%; max-width: 13.5%;">
+          <div class="col" style="flex: 0 0 14.5%; max-width: 14.5%;">
             <label class="form-label fw-semi-bold text-black"
               style="font-size:12px;">
               Terms <i class="bi bi-question-circle mx-2"></i>
@@ -602,19 +606,19 @@ select.form-select option {
             <label class="form-label fw-semi-bold text-black"
               style="font-size:12px;">Invoice
               date</label>
-            <input type="text" class="form-control" placeholder="mm/dd/yyyy"
-              id="nativeDate" class="form-control"
-              id="invoiceDate">
+            <input type="date" class="form-control service-date" placeholder="dd/mm/yyyy"
+              id="nativeDate" 
+              id="invoiceDate" style="font-size:12px">
           </div>
           <div class="col" style="flex: 0 0 15.5%; max-width: 15.5%;">
             <label class="form-label fw-semi-boldtext-black"
               style="font-size:12px;">Due date</label>
-            <input type="text" class="form-control" placeholder="mm/dd/yyyy"
-              id="nativeDate" class="form-control"
-              id="dueDate">
+            <input type="date" class="form-control service-date" placeholder="dd/mm/yyyy"
+              id="nativeDate"
+              id="dueDate" style="font-size:12px">
           </div>
           <div class="col-12 col-md-3"></div>
-          <div class="col-12 col-md-2">
+          <div class="col" style="flex: 0 0 25%; max-width: 25%;">
             <label class="form-label fw-semi-bold text-black"
               style="font-size:12px;">Invoice
               no.</label>
@@ -622,7 +626,7 @@ select.form-select option {
               style="font-size:12px;">
           </div>
         </div>
-        <div class="my-3 col-12 col-md-7">
+        <div class="my-3 col" style="flex: 0 0 70%; max-width: 70%;">
           <label
             class="form-label fw-semi-bold text-black d-flex justify-content-between align-items-center"
             style="font-size:12px;">
@@ -664,8 +668,9 @@ select.form-select option {
                   <td class="drag-handle"><i
                       class="bi bi-grip-vertical"></i></td>
                   <td>1</td>
-                  <td><input type="text" class="form-control"
-                      placeholder="mm/dd/yyyy" class="form-control " /></td>
+                  <td><input type="text"
+                      placeholder="dd/mm/yyyy" class="form-control service-date" /></td>
+                      <!-- style="font-size:12px" -->
                   <td><input type="text" class="form-control " /></td>
                   <td><input type="text" class="form-control" /></td>
                   <td><input type="number" class="form-control qty"
@@ -775,7 +780,12 @@ select.form-select option {
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script>
+  flatpickr(".service-date", {
+    dateFormat: "d/m/Y",
+    allowInput: true
+  });
+</script>
     <script>
    // Replace the existing jQuery script with this enhanced version
     $(function () {
